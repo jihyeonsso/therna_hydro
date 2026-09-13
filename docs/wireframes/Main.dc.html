@@ -1,0 +1,106 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:'Noto Sans KR','Apple SD Gothic Neo',system-ui,sans-serif;}
+  a{color:#2F7D5F;} a:hover{color:#1F5B44;}
+  .frame{width:390px;height:844px;background:#F7F9F5;display:flex;flex-direction:column;}
+  .topbar{height:56px;background:#fff;border-bottom:1px solid #E2E8E4;display:flex;align-items:center;padding:0 16px;flex-shrink:0;}
+  .topbar-title{font-size:17px;font-weight:900;color:#1F2A24;}
+  .content{flex:1;padding:16px 16px 20px;display:flex;flex-direction:column;gap:14px;overflow:auto;}
+  .label{font-size:11px;font-weight:700;color:#6B9080;text-transform:uppercase;letter-spacing:0.04em;}
+  .scan-card{background:#2F7D5F;border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:12px;}
+  .scan-title{font-size:16px;font-weight:900;color:#fff;}
+  .scan-image{height:128px;border-radius:10px;background:rgba(255,255,255,.12);border:1px dashed rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.75);font-size:12px;font-weight:600;}
+  .scan-actions{display:flex;gap:8px;}
+  .scan-btn{flex:1;height:40px;border-radius:8px;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:5px;}
+  .scan-btn.solid{background:#fff;color:#2F7D5F;}
+  .scan-btn.outline{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.4);}
+  .notice-banner{background:#EFF6EE;border:1px solid #CFE3D1;border-radius:10px;padding:12px 14px;display:flex;gap:10px;align-items:flex-start;}
+  .crop-card{background:#fff;border:1px solid #D8E3DA;border-radius:12px;padding:14px;display:flex;gap:12px;align-items:center;}
+  .crop-icon{width:44px;height:44px;border-radius:10px;background:#E9F1E9;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .crop-name{font-size:14px;font-weight:700;color:#1F2A24;}
+  .crop-method{font-size:11px;font-weight:700;color:#2F7D5F;background:#E9F1E9;padding:2px 8px;border-radius:999px;display:inline-block;margin-top:3px;}
+  .crop-next{font-size:11px;color:#8A9990;margin-top:5px;}
+</style>
+</helmet>
+<div class="frame">
+  <div class="topbar"><div class="topbar-title">ThermaVita Hydro</div></div>
+  <div class="content">
+    <div class="notice-banner">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4C8368" stroke-width="2" style="flex-shrink:0;margin-top:2px"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10 21a2 2 0 0 0 4 0"/></svg>
+      <div style="flex:1">
+        <div style="font-size:13px;font-weight:700;color:#1F2A24">공지사항</div>
+        <div style="font-size:12px;color:#5A6B60;margin-top:2px">폭염 대비 사용법 업데이트 안내 외 2건</div>
+      </div>
+      <div style="font-size:12px;color:#2F7D5F;font-weight:600">더보기</div>
+    </div>
+
+    <div class="scan-card">
+      <div class="scan-title">ThermaVita Hydro</div>
+      <div class="scan-image">제품 사진</div>
+      <div class="scan-actions">
+        <div class="scan-btn solid">제품 정보 보기</div>
+        <div class="scan-btn outline">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M4 8V5a1 1 0 0 1 1-1h3M20 8V5a1 1 0 0 0-1-1h-3M4 16v3a1 1 0 0 0 1 1h3M20 16v3a1 1 0 0 1-1 1h-3"/></svg>
+          새로 스캔하기
+        </div>
+      </div>
+    </div>
+
+    <div class="label">ThermaVita Hydro 적용 현황 (2)</div>
+
+    <div class="crop-card">
+      <div class="crop-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2F7D5F" stroke-width="2"><path d="M12 2c-4 4-6 8-6 11a6 6 0 0 0 12 0c0-3-2-7-6-11z"/></svg>
+      </div>
+      <div style="flex:1">
+        <div class="crop-name">케일</div>
+        <div class="crop-method">관주식 양액공급</div>
+        <div class="crop-next">다음 관주 일정: 9월 18일</div>
+      </div>
+      <span style="color:#B9C7BC">›</span>
+    </div>
+
+    <div class="crop-card">
+      <div class="crop-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2F7D5F" stroke-width="2"><path d="M12 2c-4 4-6 8-6 11a6 6 0 0 0 12 0c0-3-2-7-6-11z"/></svg>
+      </div>
+      <div style="flex:1">
+        <div class="crop-name">상추</div>
+        <div class="crop-method">엽면살포</div>
+        <div class="crop-next">최근 살포: 9월 9일</div>
+      </div>
+      <span style="color:#B9C7BC">›</span>
+    </div>
+  </div>
+  <div style="height:64px;background:#fff;border-top:1px solid #E2E8E4;display:flex;flex-shrink:0;">
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:10px;color:#2F7D5F;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+      홈
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:10px;color:#9AA79E;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h12a2 2 0 0 1 2 2v14H6a2 2 0 0 1-2-2V4z"/></svg>
+      가이드
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:10px;color:#9AA79E;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/></svg>
+      관리
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:10px;color:#9AA79E;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 5-6 8-6s6.5 2 8 6"/></svg>
+      MY
+    </div>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

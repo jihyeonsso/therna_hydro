@@ -1,0 +1,87 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:'Noto Sans KR','Apple SD Gothic Neo',system-ui,sans-serif;}
+  .frame{width:390px;height:844px;background:#F7F9F5;display:flex;flex-direction:column;position:relative;}
+  .topbar{height:56px;background:#fff;border-bottom:1px solid #E2E8E4;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 16px;flex-shrink:0;}
+  .topbar-left{display:flex;align-items:center;gap:12px;}
+  .topbar-title{font-size:16px;font-weight:700;color:#1F2A24;}
+  .content{flex:1;padding:16px;display:flex;flex-direction:column;gap:16px;overflow:auto;}
+  .cal-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;background:#fff;border:1px solid #D8E3DA;border-radius:10px;padding:12px;}
+  .cal-cell{aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:11px;color:#5A6B60;border-radius:6px;gap:2px;}
+  .cal-cell.today{background:#E9F1E9;font-weight:700;color:#2F7D5F;}
+  .dot{width:4px;height:4px;border-radius:50%;background:#2F7D5F;}
+  .label{font-size:11px;font-weight:700;color:#6B9080;text-transform:uppercase;letter-spacing:0.04em;}
+  .item-card{background:#fff;border:1px solid #D8E3DA;border-radius:10px;padding:14px;display:flex;justify-content:space-between;align-items:center;}
+  .fab{position:absolute;bottom:80px;right:20px;width:52px;height:52px;border-radius:50%;background:#2F7D5F;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 10px rgba(0,0,0,.2);}
+  .segment{display:flex;background:#EEF2EE;border-radius:9px;padding:3px;margin:12px 16px 0;flex-shrink:0;}
+  .segment-btn{flex:1;text-align:center;padding:8px;border-radius:7px;font-size:13px;font-weight:700;color:#5A6B60;}
+  .segment-btn.active{background:#fff;color:#2F7D5F;box-shadow:0 1px 3px rgba(0,0,0,.08);}
+  .tabbar{height:64px;background:#fff;border-top:1px solid #E2E8E4;display:flex;flex-shrink:0;}
+  .tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:10px;color:#9AA79E;}
+  .tab.active{color:#2F7D5F;}
+</style>
+</helmet>
+<div class="frame">
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="topbar-title">사용 관리</div>
+    </div>
+  </div>
+  <div class="segment">
+    <div class="segment-btn active">일정</div>
+    <div class="segment-btn">이력</div>
+  </div>
+  <div class="content">
+    <div class="cal-grid">
+      <div class="cal-cell" style="color:#B9C7BC">일</div><div class="cal-cell" style="color:#B9C7BC">월</div><div class="cal-cell" style="color:#B9C7BC">화</div><div class="cal-cell" style="color:#B9C7BC">수</div><div class="cal-cell" style="color:#B9C7BC">목</div><div class="cal-cell" style="color:#B9C7BC">금</div><div class="cal-cell" style="color:#B9C7BC">토</div>
+      <div class="cal-cell">1</div><div class="cal-cell">2</div><div class="cal-cell">3<div class="dot"></div></div><div class="cal-cell">4</div><div class="cal-cell">5</div><div class="cal-cell">6</div><div class="cal-cell">7</div>
+      <div class="cal-cell">8</div><div class="cal-cell">9</div><div class="cal-cell">10<div class="dot"></div></div><div class="cal-cell today">11</div><div class="cal-cell">12</div><div class="cal-cell">13</div><div class="cal-cell">14</div>
+      <div class="cal-cell">15</div><div class="cal-cell">16</div><div class="cal-cell">17<div class="dot"></div></div><div class="cal-cell">18</div><div class="cal-cell">19</div><div class="cal-cell">20</div><div class="cal-cell">21</div>
+    </div>
+
+    <div>
+      <div class="label" style="margin-bottom:10px">9월 11일 일정</div>
+      <div class="item-card">
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#1F2A24">케일 · 관주</div>
+          <div style="font-size:12px;color:#8A9990;margin-top:2px">매주 반복</div>
+        </div>
+        <span style="color:#B9C7BC">›</span>
+      </div>
+    </div>
+  </div>
+  <div class="fab">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+  </div>
+  <div class="tabbar">
+    <div class="tab">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+      홈
+    </div>
+    <div class="tab">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h12a2 2 0 0 1 2 2v14H6a2 2 0 0 1-2-2V4z"/></svg>
+      가이드
+    </div>
+    <div class="tab active">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/></svg>
+      관리
+    </div>
+    <div class="tab">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 5-6 8-6s6.5 2 8 6"/></svg>
+      MY
+    </div>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

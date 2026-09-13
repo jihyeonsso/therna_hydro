@@ -1,0 +1,95 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:'Noto Sans KR','Apple SD Gothic Neo',system-ui,sans-serif;}
+  .frame{width:390px;height:844px;background:#F7F9F5;display:flex;flex-direction:column;}
+  .topbar{height:56px;background:#fff;border-bottom:1px solid #E2E8E4;display:flex;align-items:center;padding:0 16px;flex-shrink:0;}
+  .topbar-title{font-size:17px;font-weight:900;color:#1F2A24;}
+  .content{flex:1;padding:20px 16px;display:flex;flex-direction:column;gap:16px;overflow:auto;}
+  .profile-card{background:#fff;border:1px solid #D8E3DA;border-radius:12px;padding:16px;display:flex;align-items:center;gap:12px;}
+  .avatar{width:48px;height:48px;border-radius:50%;background:#E9F1E9;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .profile-name{font-size:15px;font-weight:700;color:#1F2A24;}
+  .profile-email{font-size:12px;color:#8A9990;margin-top:2px;}
+  .menu-group{background:#fff;border:1px solid #D8E3DA;border-radius:12px;overflow:hidden;}
+  .menu-item{display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid #EEF2EE;font-size:14px;color:#1F2A24;font-weight:600;}
+  .menu-item:last-child{border-bottom:none;}
+  .menu-item .chev{margin-left:auto;color:#B9C7BC;font-weight:400;}
+  .menu-item.danger{color:#DC2626;}
+  .tabbar{height:64px;background:#fff;border-top:1px solid #E2E8E4;display:flex;flex-shrink:0;}
+  .tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:10px;color:#9AA79E;}
+  .tab.active{color:#2F7D5F;}
+</style>
+</helmet>
+<div class="frame">
+  <div class="topbar"><div class="topbar-title">마이페이지</div></div>
+  <div class="content">
+    <div class="profile-card">
+      <div class="avatar">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2F7D5F" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 5-6 8-6s6.5 2 8 6"/></svg>
+      </div>
+      <div>
+        <div class="profile-name">홍길동 님</div>
+        <div class="profile-email">hong@example.com</div>
+      </div>
+    </div>
+
+    <div class="menu-group">
+      <div class="menu-item">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2F7D5F" stroke-width="2"><path d="M12 2c-4 4-6 8-6 11a6 6 0 0 0 12 0c0-3-2-7-6-11z"/></svg>
+        재배환경 관리
+        <span class="chev">›</span>
+      </div>
+      <div class="menu-item">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2F7D5F" stroke-width="2"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10 21a2 2 0 0 0 4 0"/></svg>
+        공지사항 전체보기
+        <span class="chev">›</span>
+      </div>
+      <div class="menu-item">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2F7D5F" stroke-width="2"><path d="M4 4h12a2 2 0 0 1 2 2v14H6a2 2 0 0 1-2-2V4z"/><path d="M8 8h8M8 12h8"/></svg>
+        이용약관 · 개인정보처리방침
+        <span class="chev">›</span>
+      </div>
+    </div>
+
+    <div class="menu-group">
+      <div class="menu-item">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3A4A40" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5M21 12H9"/></svg>
+        로그아웃
+      </div>
+      <div class="menu-item danger">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#DC2626" stroke-width="2"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg>
+        회원 탈퇴
+      </div>
+    </div>
+  </div>
+  <div class="tabbar">
+    <div class="tab">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+      홈
+    </div>
+    <div class="tab">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h12a2 2 0 0 1 2 2v14H6a2 2 0 0 1-2-2V4z"/></svg>
+      가이드
+    </div>
+    <div class="tab">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/></svg>
+      관리
+    </div>
+    <div class="tab active">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 5-6 8-6s6.5 2 8 6"/></svg>
+      MY
+    </div>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

@@ -1,0 +1,37 @@
+{
+  "artboards": [
+    { "file": "Main.dc.html", "x": 0, "y": 0, "w": 390, "h": 844, "title": "S-01 홈(내작물)" },
+    { "file": "CropDetail.dc.html", "x": 490, "y": 0, "w": 390, "h": 1000, "title": "S-01b 작물상세" },
+    { "file": "QRScan.dc.html", "x": 980, "y": 0, "w": 390, "h": 844, "title": "S-02 QR스캔" },
+    { "file": "CodeInput.dc.html", "x": 1470, "y": 0, "w": 390, "h": 844, "title": "S-03 코드입력" },
+    { "file": "ProductInfo.dc.html", "x": 1960, "y": 0, "w": 390, "h": 844, "title": "S-04 제품정보" },
+
+    { "file": "CropSelect.dc.html", "x": 0, "y": 1150, "w": 390, "h": 844, "title": "S-05 작물선택" },
+    { "file": "MethodSelect.dc.html", "x": 490, "y": 1150, "w": 390, "h": 844, "title": "S-05b 적용방법선택" },
+    { "file": "GuideHome.dc.html", "x": 980, "y": 1150, "w": 390, "h": 844, "title": "S-04b 가이드홈" },
+    { "file": "DilutionResultDrip.dc.html", "x": 1470, "y": 1150, "w": 390, "h": 1120, "title": "S-06a 사용법(관주식)" },
+    { "file": "DilutionResultFoliar.dc.html", "x": 1960, "y": 1150, "w": 390, "h": 1020, "title": "S-06b 사용법(엽면살포)" },
+
+    { "file": "HeatTiming.dc.html", "x": 0, "y": 2420, "w": 390, "h": 844, "title": "S-08 폭염대응시점" },
+    { "file": "Login.dc.html", "x": 490, "y": 2420, "w": 390, "h": 844, "title": "S-10a 로그인" },
+    { "file": "Signup.dc.html", "x": 980, "y": 2420, "w": 390, "h": 844, "title": "S-10b 회원가입" },
+    { "file": "Terms.dc.html", "x": 1470, "y": 2420, "w": 390, "h": 844, "title": "S-10d 약관동의" },
+    { "file": "Calendar.dc.html", "x": 1960, "y": 2420, "w": 390, "h": 844, "title": "S-11 관리(일정)" },
+
+    { "file": "ScheduleForm.dc.html", "x": 0, "y": 3414, "w": 390, "h": 844, "title": "S-11b 일정등록폼" },
+    { "file": "HistoryInput.dc.html", "x": 490, "y": 3414, "w": 390, "h": 844, "title": "S-12 이력입력" },
+    { "file": "HistoryList.dc.html", "x": 980, "y": 3414, "w": 390, "h": 844, "title": "S-13 관리(이력)" },
+    { "file": "MyPage.dc.html", "x": 1470, "y": 3414, "w": 390, "h": 844, "title": "S-15 마이페이지" },
+    { "file": "EnvironmentForm.dc.html", "x": 1960, "y": 3414, "w": 390, "h": 844, "title": "S-15b 재배환경등록" },
+
+    { "file": "ScanFail.dc.html", "x": 0, "y": 4408, "w": 390, "h": 844, "title": "SX-01 인식실패" }
+  ],
+  "annotations": [
+    { "id": "row-1", "x": 0, "y": -100, "w": 2350, "text": "① 홈=내 작물 대시보드(공지→제품카드→리스트) → 작물상세 / 신규 등록(스캔→제품정보)" },
+    { "id": "row-2", "x": 0, "y": 1050, "w": 2350, "text": "② 신규 등록 흐름 + 가이드 탭(등록 없이 둘러보기, 같은 화면 재사용) / 폭염대응은 다음 줄" },
+    { "id": "row-3", "x": 0, "y": 2320, "w": 2350, "text": "③ 폭염대응(공통) / 인증(로그인·가입·약관) / 관리탭-일정(세그먼트+탭바)" },
+    { "id": "row-4", "x": 0, "y": 3314, "w": 2350, "text": "④ 일정등록폼 / 이력입력폼 / 관리탭-이력(세그먼트+탭바) / MY허브 / 재배환경등록" },
+    { "id": "row-5", "x": 0, "y": 4308, "w": 2350, "text": "⑤ 제품인식 실패" }
+  ],
+  "launch": { "view": "canvas" }
+}

@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:'Noto Sans KR','Apple SD Gothic Neo',system-ui,sans-serif;}
+  a{color:#2F7D5F;}
+  .frame{width:390px;height:844px;background:#F7F9F5;display:flex;flex-direction:column;}
+  .topbar{height:56px;background:#fff;border-bottom:1px solid #E2E8E4;display:flex;align-items:center;gap:12px;padding:0 16px;flex-shrink:0;}
+  .topbar-title{font-size:16px;font-weight:700;color:#1F2A24;}
+  .content{flex:1;padding:20px 20px;display:flex;flex-direction:column;gap:12px;overflow:auto;}
+  .input{height:50px;border:1px dashed #B9C7BC;border-radius:8px;padding:0 14px;font-size:14px;color:#9AA79E;display:flex;align-items:center;background:#fff;}
+  .btn-primary{height:52px;background:#2F7D5F;color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:8px;}
+  .check-row{display:flex;align-items:center;gap:10px;padding:12px 0;font-size:13px;color:#3A4A40;}
+  .checkbox{width:20px;height:20px;border-radius:5px;border:1px solid #B9C7BC;flex-shrink:0;}
+</style>
+</helmet>
+<div class="frame">
+  <div class="topbar">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1F2A24" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+    <div class="topbar-title">회원가입</div>
+  </div>
+  <div class="content">
+    <div class="input">이름</div>
+    <div class="input">이메일</div>
+    <div class="input">비밀번호</div>
+    <div class="input">비밀번호 확인</div>
+    <div class="check-row">
+      <div class="checkbox"></div>
+      <div>이용약관 및 개인정보처리방침 <a style="text-decoration:underline">동의(보기)</a></div>
+    </div>
+    <div class="btn-primary">가입하기</div>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

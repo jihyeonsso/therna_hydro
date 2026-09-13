@@ -1,0 +1,19 @@
+services:
+  app:
+    build: .
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: "file:/app/prisma/data/dev.db"
+      SESSION_SECRET: "${SESSION_SECRET}"
+    volumes:
+      # SQLite 파일을 named volume에 저장 — 컨테이너를 다시 빌드/재시작해도 데이터 유지
+      - thermavita_db:/app/prisma/data
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.thermavita-hydro.entrypoints=websecure"
+      - "traefik.http.routers.thermavita-hydro.rule=Host(`thermavita-hydro.srv1925869.hstgr.cloud`)"
+      - "traefik.http.routers.thermavita-hydro.tls.certresolver=letsencrypt"
+      - "traefik.http.services.thermavita-hydro.loadbalancer.server.port=3000"
+
+volumes:
+  thermavita_db:

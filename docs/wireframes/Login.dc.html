@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:'Noto Sans KR','Apple SD Gothic Neo',system-ui,sans-serif;}
+  a{color:#2F7D5F;text-decoration:none;}
+  .frame{width:390px;height:844px;background:#F7F9F5;display:flex;flex-direction:column;}
+  .content{flex:1;padding:64px 28px 28px;display:flex;flex-direction:column;gap:16px;}
+  .logo{width:64px;height:64px;border-radius:16px;background:#E9F1E9;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;}
+  .input{height:52px;border:1px dashed #B9C7BC;border-radius:8px;padding:0 14px;font-size:14px;color:#9AA79E;display:flex;align-items:center;background:#fff;}
+  .btn-primary{height:52px;background:#2F7D5F;color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:8px;}
+  .footer-row{display:flex;justify-content:center;gap:16px;font-size:13px;color:#5A6B60;margin-top:20px;}
+</style>
+</helmet>
+<div class="frame">
+  <div class="content">
+    <div class="logo">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#2F7D5F" stroke-width="2"><path d="M12 2C8 6 6 10 6 13a6 6 0 0 0 12 0c0-3-2-7-6-11z"/></svg>
+    </div>
+    <div style="text-align:center;font-size:18px;font-weight:900;color:#1F2A24;margin-bottom:8px">ThermaVita Hydro</div>
+    <div class="input">이메일</div>
+    <div class="input">비밀번호</div>
+    <div class="btn-primary">로그인</div>
+    <div class="footer-row">
+      <a>회원가입</a>
+      <span style="color:#D8E3DA">|</span>
+      <a>비밀번호 찾기</a>
+    </div>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

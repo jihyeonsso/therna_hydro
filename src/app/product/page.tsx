@@ -1,0 +1,59 @@
+import Link from "next/link";
+import { prisma } from "@/lib/prisma";
+import { BackHeader } from "@/components/BackHeader";
+
+// 관리자가 언제든 내용을 바꿀 수 있는 콘텐츠라 빌드 시점에 정적으로 굳지 않도록 강제
+export const dynamic = "force-dynamic";
+
+export default async function ProductInfoPage() {
+  const product = await prisma.product.findFirst();
+
+  return (
+    <div className="mx-auto flex min-h-screen w-full max-w-md flex-col bg-bg">
+      <BackHeader title="제품 정보" />
+      <div className="flex flex-1 flex-col gap-3.5 p-4 pb-8">
+        <div className="flex h-[140px] items-center justify-center rounded-[10px] bg-[#E5EAE6] text-xs text-text-faint">
+          제품 이미지
+        </div>
+        <div>
+          <div className="text-[19px] font-black text-text">{product?.name ?? "ThermaVita Hydro"}</div>
+          <span className="mt-1.5 inline-block rounded-full bg-primary-soft px-2.5 py-1 text-[11px] font-bold text-primary">
+            수경·양액 시스템 특화
+          </span>
+        </div>
+
+        <div className="rounded-[10px] border border-border bg-surface p-4">
+          <div className="mb-2 text-[11px] font-bold uppercase tracking-wide text-text-muted">원료</div>
+          <div className="text-[13px] leading-relaxed text-text">
+            {product?.ingredientSummary ?? "확인 필요 — 부티릭스 콘텐츠 등록 대기"}
+          </div>
+        </div>
+
+        <div className="rounded-[10px] border border-border bg-surface p-4">
+          <div className="mb-2 text-[11px] font-bold uppercase tracking-wide text-text-muted">제품 특성</div>
+          <div className="flex items-start gap-2.5 py-1 text-[13px] text-text">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2F7D5F" strokeWidth={2} className="mt-0.5 shrink-0">
+              <circle cx="12" cy="12" r="9" />
+              <path d="M8 12l3 3 5-5" />
+            </svg>
+            {product?.filtrationNote ?? "여과·정제 처리 — 침전·노즐막힘 방지"}
+          </div>
+          <div className="flex items-start gap-2.5 py-1 text-[13px] text-text">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2F7D5F" strokeWidth={2} className="mt-0.5 shrink-0">
+              <circle cx="12" cy="12" r="9" />
+              <path d="M8 12l3 3 5-5" />
+            </svg>
+            {product?.phEcStabilityNote ?? "pH·EC 안정성 확보 제형"}
+          </div>
+        </div>
+
+        <Link
+          href="/crop/select"
+          className="flex h-[52px] w-full items-center justify-center rounded-[10px] bg-primary text-[15px] font-bold text-white"
+        >
+          사용가이드 보러가기
+        </Link>
+      </div>
+    </div>
+  );
+}

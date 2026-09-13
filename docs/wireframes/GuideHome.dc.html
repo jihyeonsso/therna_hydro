@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:'Noto Sans KR','Apple SD Gothic Neo',system-ui,sans-serif;}
+  .frame{width:390px;height:844px;background:#F7F9F5;display:flex;flex-direction:column;}
+  .topbar{height:56px;background:#fff;border-bottom:1px solid #E2E8E4;display:flex;align-items:center;padding:0 16px;flex-shrink:0;}
+  .topbar-title{font-size:17px;font-weight:900;color:#1F2A24;}
+  .content{flex:1;padding:20px 16px;display:flex;flex-direction:column;gap:16px;overflow:auto;}
+  .intro-banner{background:#EFF6EE;border:1px solid #CFE3D1;border-radius:10px;padding:14px;font-size:13px;color:#3A4A40;line-height:1.6;}
+  .label{font-size:11px;font-weight:700;color:#6B9080;text-transform:uppercase;letter-spacing:0.04em;}
+  .chip-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;}
+  .chip{height:72px;border-radius:10px;border:1px solid #D8E3DA;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;font-size:12px;font-weight:600;color:#3A4A40;}
+  .tabbar{height:64px;background:#fff;border-top:1px solid #E2E8E4;display:flex;flex-shrink:0;}
+  .tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:10px;color:#9AA79E;}
+  .tab.active{color:#2F7D5F;}
+</style>
+</helmet>
+<div class="frame">
+  <div class="topbar"><div class="topbar-title">가이드</div></div>
+  <div class="content">
+    <div class="intro-banner">등록하지 않아도 작물별 ThermaVita Hydro 사용법을 미리 살펴볼 수 있어요. 실제로 사용 중인 작물은 홈에서 등록해 관리하세요.</div>
+
+    <div class="label" style="margin-top:4px">작물을 선택하세요</div>
+    <div class="chip-grid">
+      <div class="chip">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2F7D5F" stroke-width="2"><path d="M12 2c-4 4-6 8-6 11a6 6 0 0 0 12 0c0-3-2-7-6-11z"/></svg>
+        케일
+      </div>
+      <div class="chip">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2F7D5F" stroke-width="2"><path d="M12 2c-4 4-6 8-6 11a6 6 0 0 0 12 0c0-3-2-7-6-11z"/></svg>
+        셀러리
+      </div>
+      <div class="chip">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2F7D5F" stroke-width="2"><path d="M12 2c-4 4-6 8-6 11a6 6 0 0 0 12 0c0-3-2-7-6-11z"/></svg>
+        상추
+      </div>
+      <div class="chip">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2F7D5F" stroke-width="2"><path d="M12 2c-4 4-6 8-6 11a6 6 0 0 0 12 0c0-3-2-7-6-11z"/></svg>
+        밀싹
+      </div>
+      <div class="chip">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2F7D5F" stroke-width="2"><path d="M12 2c-4 4-6 8-6 11a6 6 0 0 0 12 0c0-3-2-7-6-11z"/></svg>
+        토마토
+      </div>
+      <div class="chip">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2F7D5F" stroke-width="2"><path d="M12 2c-4 4-6 8-6 11a6 6 0 0 0 12 0c0-3-2-7-6-11z"/></svg>
+        딸기
+      </div>
+    </div>
+  </div>
+  <div class="tabbar">
+    <div class="tab">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+      홈
+    </div>
+    <div class="tab active">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h12a2 2 0 0 1 2 2v14H6a2 2 0 0 1-2-2V4z"/></svg>
+      가이드
+    </div>
+    <div class="tab">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/></svg>
+      관리
+    </div>
+    <div class="tab">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 5-6 8-6s6.5 2 8 6"/></svg>
+      MY
+    </div>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>
