@@ -2,18 +2,8 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth";
 import { METHOD_LABEL, formatMonthDay } from "@/lib/labels";
-import { Banner } from "@/components/Banner";
 
-const HOME_NOTICE_TEXT: Record<string, string> = {
-  withdrawn: "탈퇴가 완료되었습니다. 그동안 이용해주셔서 감사합니다.",
-};
-
-export default async function HomePage({
-  searchParams,
-}: {
-  searchParams: Promise<{ notice?: string }>;
-}) {
-  const { notice: noticeCode } = await searchParams;
+export default async function HomePage() {
   const user = await getCurrentUser();
 
   const urgentNotice = await prisma.notice.findFirst({
@@ -41,8 +31,6 @@ export default async function HomePage({
       </header>
 
       <div className="flex flex-col gap-3.5 p-4">
-        {noticeCode && HOME_NOTICE_TEXT[noticeCode] && <Banner variant="success">{HOME_NOTICE_TEXT[noticeCode]}</Banner>}
-
         {urgentNotice && (
           <Link
             href="/my/notices"

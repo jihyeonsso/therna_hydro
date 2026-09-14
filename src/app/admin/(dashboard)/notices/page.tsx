@@ -34,16 +34,6 @@ export default async function AdminNoticesPage({
     <div>
       <h1 className="mb-5 text-xl font-black text-text">공지사항 관리</h1>
 
-      {notice === "created" && (
-        <div className="mb-4">
-          <Banner variant="success">등록되었습니다</Banner>
-        </div>
-      )}
-      {notice === "deleted" && (
-        <div className="mb-4">
-          <Banner variant="success">삭제되었습니다</Banner>
-        </div>
-      )}
       {notice === "invalid" && (
         <div className="mb-4">
           <Banner variant="danger">제목과 내용을 모두 입력해주세요</Banner>

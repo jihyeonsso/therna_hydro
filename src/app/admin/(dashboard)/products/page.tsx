@@ -1,14 +1,8 @@
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { SubmitButton } from "@/components/SubmitButton";
-import { Banner } from "@/components/Banner";
 
-export default async function AdminProductsPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ saved?: string }>;
-}) {
-  const { saved } = await searchParams;
+export default async function AdminProductsPage() {
   const product = await prisma.product.findFirst();
 
   async function save(formData: FormData) {
@@ -24,17 +18,12 @@ export default async function AdminProductsPage({
     } else {
       await prisma.product.create({ data: { id: "singleton", ...data } });
     }
-    redirect("/admin/products?saved=1");
+    redirect("/admin/products?notice=saved");
   }
 
   return (
     <div>
       <h1 className="mb-5 text-xl font-black text-text">제품 정보 관리</h1>
-      {saved && (
-        <div className="mb-4 max-w-lg">
-          <Banner variant="success">저장되었습니다</Banner>
-        </div>
-      )}
       <form action={save} className="flex max-w-lg flex-col gap-4 rounded-xl border border-border bg-surface p-6">
         <Field label="제품명" name="name" defaultValue={product?.name ?? "ThermaVita Hydro"} />
         <TextArea label="원료 설명" name="ingredientSummary" defaultValue={product?.ingredientSummary ?? ""} />

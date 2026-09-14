@@ -3,12 +3,6 @@ import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth";
 import { formatMonthDay, METHOD_LABEL } from "@/lib/labels";
 import { MonthCalendar } from "@/components/MonthCalendar";
-import { Banner } from "@/components/Banner";
-
-const NOTICE_TEXT: Record<string, string> = {
-  saved: "저장되었습니다",
-  deleted: "삭제되었습니다",
-};
 
 function FilterChip({ href, active, children }: { href: string; active: boolean; children: React.ReactNode }) {
   return (
@@ -30,7 +24,7 @@ function toKey(d: Date): string {
 export default async function ManagePage({
   searchParams,
 }: {
-  searchParams: Promise<{ tab?: string; month?: string; day?: string; range?: string; crop?: string; notice?: string }>;
+  searchParams: Promise<{ tab?: string; month?: string; day?: string; range?: string; crop?: string }>;
 }) {
   const {
     tab = "schedule",
@@ -38,7 +32,6 @@ export default async function ManagePage({
     day: dayParam,
     range = "all",
     crop: cropFilter,
-    notice,
   } = await searchParams;
   const user = await getCurrentUser();
 
@@ -116,12 +109,6 @@ export default async function ManagePage({
             로그인
           </Link>{" "}
           후 이용할 수 있어요
-        </div>
-      )}
-
-      {notice && NOTICE_TEXT[notice] && (
-        <div className="mx-4 mt-3">
-          <Banner variant="success">{NOTICE_TEXT[notice]}</Banner>
         </div>
       )}
 
