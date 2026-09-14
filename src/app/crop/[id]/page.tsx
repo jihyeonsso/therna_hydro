@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+import { getCurrentUser } from "@/lib/auth";
 import { BackHeader } from "@/components/BackHeader";
 import { METHOD_LABEL, formatMonthDay } from "@/lib/labels";
 
@@ -16,6 +17,9 @@ function Card({ label, children }: { label: string; children: React.ReactNode })
 export default async function CropDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
 
+  const user = await getCurrentUser();
+  if (!user) redirect(`/login?next=${encodeURIComponent(`/crop/${id}`)}`);
+
   const crop = await prisma.registeredCrop.findUnique({
     where: { id },
     include: {
@@ -23,7 +27,9 @@ export default async function CropDetailPage({ params }: { params: Promise<{ id:
       histories: { orderBy: { appliedDate: "desc" }, take: 1 },
     },
   });
-  if (!crop) notFound();
+  // 존재하지 않거나 다른 사용자 소유의 작물이면 동일하게 404 처리
+  // (있는데 권한만 없는 경우를 구분해서 알려주면 다른 사용자의 ID 존재 여부가 유추될 수 있어, 의도적으로 구분하지 않음)
+  if (!crop || crop.userId !== user.id) notFound();
 
   const guide = await prisma.guideContent.findUnique({
     where: { cropName_method: { cropName: crop.cropName, method: crop.method } },

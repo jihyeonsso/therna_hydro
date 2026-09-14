@@ -1,4 +1,4 @@
-import { redirect } from "next/navigation";
+import { redirect, notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth";
 import { BackHeader } from "@/components/BackHeader";
@@ -15,8 +15,13 @@ export default async function ScheduleFormPage({
     redirect(`/login?next=${encodeURIComponent(`/manage/schedule/new${qs ? `?${qs}` : ""}`)}`);
   }
 
-  const crops = await prisma.registeredCrop.findMany({ where: { userId: user.id } });
-  const existing = id ? await prisma.schedule.findUnique({ where: { id } }) : null;
+  const userId = user.id; // 아래 서버 액션 클로저에서 참조 (TS가 user의 null 좁히기를 클로저까지 못 미치므로)
+  const crops = await prisma.registeredCrop.findMany({ where: { userId } });
+  // 소유자 검증: 내 작물에 속한 일정만 조회 가능 (다른 사용자의 일정 id를 넣어도 안 보임)
+  const existing = id
+    ? await prisma.schedule.findFirst({ where: { id, registeredCrop: { userId } } })
+    : null;
+  if (id && !existing) notFound();
 
   async function save(formData: FormData) {
     "use server";
@@ -24,7 +29,16 @@ export default async function ScheduleFormPage({
     const scheduledDate = new Date(String(formData.get("scheduledDate")));
     const repeatRule = String(formData.get("repeatRule") || "") || null;
 
+    // 폼에서 넘어온 작물이 실제로 내 소유인지 확인 (요청 조작 방지)
+    const ownedCrop = await prisma.registeredCrop.findFirst({
+      where: { id: registeredCropId, userId },
+    });
+    if (!ownedCrop) redirect("/manage?tab=schedule");
+
     if (id) {
+      // 수정 대상 일정도 내 소유인지 재확인 후 수정
+      const owned = await prisma.schedule.findFirst({ where: { id, registeredCrop: { userId } } });
+      if (!owned) redirect("/manage?tab=schedule");
       await prisma.schedule.update({ where: { id }, data: { registeredCropId, scheduledDate, repeatRule } });
     } else {
       await prisma.schedule.create({ data: { registeredCropId, scheduledDate, repeatRule } });
@@ -34,7 +48,10 @@ export default async function ScheduleFormPage({
 
   async function remove() {
     "use server";
-    if (id) await prisma.schedule.delete({ where: { id } });
+    if (id) {
+      // 내 소유의 일정일 때만 삭제 허용
+      await prisma.schedule.deleteMany({ where: { id, registeredCrop: { userId } } });
+    }
     redirect("/manage?tab=schedule");
   }
 

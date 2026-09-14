@@ -14,7 +14,8 @@ export default async function HistoryInputPage({
     redirect(`/login?next=${encodeURIComponent(`/manage/history/new${cropId ? `?cropId=${cropId}` : ""}`)}`);
   }
 
-  const crops = await prisma.registeredCrop.findMany({ where: { userId: user.id } });
+  const userId = user.id; // 아래 서버 액션 클로저에서 참조
+  const crops = await prisma.registeredCrop.findMany({ where: { userId } });
 
   async function save(formData: FormData) {
     "use server";
@@ -23,6 +24,12 @@ export default async function HistoryInputPage({
     const dilutionRatioRaw = String(formData.get("dilutionRatio") || "");
     const amountRaw = String(formData.get("amountLiters") || "");
     const memo = String(formData.get("memo") || "") || null;
+
+    // 폼에서 넘어온 작물이 실제로 내 소유인지 확인 (요청 조작 방지)
+    const ownedCrop = await prisma.registeredCrop.findFirst({
+      where: { id: registeredCropId, userId },
+    });
+    if (!ownedCrop) redirect("/manage?tab=history");
 
     await prisma.usageHistory.create({
       data: {
