@@ -1,6 +1,7 @@
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { formatMonthDay } from "@/lib/labels";
+import { SubmitButton } from "@/components/SubmitButton";
 
 export default async function AdminNoticesPage() {
   const notices = await prisma.notice.findMany({ orderBy: { createdAt: "desc" } });
@@ -48,9 +49,12 @@ export default async function AdminNoticesPage() {
           <input type="checkbox" name="isUrgent" className="h-4 w-4" />
           긴급 공지(경고색 배너로 별도 노출 — 2차 화면 구현 예정)
         </label>
-        <button type="submit" className="h-10 w-fit rounded-lg bg-primary px-5 text-sm font-bold text-white">
+        <SubmitButton
+          pendingText="등록 중..."
+          className="h-10 w-fit rounded-lg bg-primary px-5 text-sm font-bold text-white"
+        >
           등록
-        </button>
+        </SubmitButton>
       </form>
 
       <div className="flex flex-col gap-2.5">
@@ -66,9 +70,9 @@ export default async function AdminNoticesPage() {
             </div>
             <form action={remove}>
               <input type="hidden" name="id" value={n.id} />
-              <button type="submit" className="text-xs font-semibold text-danger">
+              <SubmitButton pendingText="삭제 중..." className="text-xs font-semibold text-danger">
                 삭제
-              </button>
+              </SubmitButton>
             </form>
           </div>
         ))}

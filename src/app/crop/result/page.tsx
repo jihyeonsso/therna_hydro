@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth";
 import { BackHeader } from "@/components/BackHeader";
+import { SubmitButton } from "@/components/SubmitButton";
 import type { ApplicationMethod } from "@/generated/prisma/enums";
 
 function Card({ label, children }: { label: string; children: React.ReactNode }) {
@@ -114,15 +115,15 @@ export default async function CropResultPage({
         )}
 
         <form action={registerCrop}>
-          <button
-            type="submit"
+          <SubmitButton
+            pendingText="등록 중..."
             className="flex h-[52px] w-full items-center justify-center gap-2 rounded-[10px] bg-primary text-[15px] font-bold text-white"
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth={2}>
               <path d="M12 5v14M5 12h14" />
             </svg>
             내 작물로 등록하기
-          </button>
+          </SubmitButton>
         </form>
 
         <Link

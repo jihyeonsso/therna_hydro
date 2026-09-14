@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth";
 import { BackHeader } from "@/components/BackHeader";
+import { SubmitButton } from "@/components/SubmitButton";
 
 export default async function HistoryInputPage({
   searchParams,
@@ -100,13 +101,13 @@ export default async function HistoryInputPage({
             className="min-h-[80px] w-full rounded-lg border border-border bg-surface p-3.5 text-sm text-text placeholder:text-text-faint"
           />
         </div>
-        <button
-          type="submit"
+        <SubmitButton
           disabled={crops.length === 0}
-          className="mt-1 flex h-[52px] w-full items-center justify-center rounded-[10px] bg-primary text-[15px] font-bold text-white disabled:opacity-50"
+          pendingText="저장 중..."
+          className="mt-1 flex h-[52px] w-full items-center justify-center rounded-[10px] bg-primary text-[15px] font-bold text-white"
         >
           저장
-        </button>
+        </SubmitButton>
       </form>
     </div>
   );

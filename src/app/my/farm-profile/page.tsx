@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth";
 import { BackHeader } from "@/components/BackHeader";
+import { SubmitButton } from "@/components/SubmitButton";
 
 const SYSTEM_TYPES = ["순환식(NFT)", "담액식", "점적식"];
 
@@ -46,12 +47,12 @@ export default async function FarmProfilePage() {
             ))}
           </div>
         </div>
-        <button
-          type="submit"
+        <SubmitButton
+          pendingText="저장 중..."
           className="mt-2 flex h-[52px] w-full items-center justify-center rounded-[10px] bg-primary text-[15px] font-bold text-white"
         >
           저장
-        </button>
+        </SubmitButton>
       </form>
     </div>
   );

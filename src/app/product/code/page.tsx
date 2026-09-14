@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { BackHeader } from "@/components/BackHeader";
+import { SubmitButton } from "@/components/SubmitButton";
 
 export default function CodeInputPage() {
   async function submitCode(formData: FormData) {
@@ -23,12 +24,12 @@ export default function CodeInputPage() {
             className="h-[52px] w-full rounded-lg border border-border bg-surface px-3.5 text-sm text-text placeholder:text-text-faint"
           />
         </div>
-        <button
-          type="submit"
+        <SubmitButton
+          pendingText="확인 중..."
           className="flex h-[52px] w-full items-center justify-center rounded-[10px] bg-primary text-[15px] font-bold text-white"
         >
           확인
-        </button>
+        </SubmitButton>
         <div className="rounded-lg bg-[#EFF6EE] p-3 text-xs leading-relaxed text-text-muted">
           카메라 사용이 어려우신가요?
           <br />

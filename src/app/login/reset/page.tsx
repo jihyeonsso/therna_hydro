@@ -1,5 +1,6 @@
 import { BackHeader } from "@/components/BackHeader";
 
+// TODO: 실제 재설정 메일 발송 로직 미구현 (이메일 발송 인프라 필요) — 현재는 화면만 존재
 export default function ResetPasswordPage() {
   return (
     <div className="mx-auto flex min-h-screen w-full max-w-md flex-col bg-bg">

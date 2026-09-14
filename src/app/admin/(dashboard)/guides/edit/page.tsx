@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { METHOD_LABEL } from "@/lib/labels";
+import { SubmitButton } from "@/components/SubmitButton";
 import type { ApplicationMethod } from "@/generated/prisma/enums";
 
 export default async function AdminGuideEditPage({
@@ -91,9 +92,9 @@ export default async function AdminGuideEditPage({
           </>
         )}
 
-        <button type="submit" className="h-11 rounded-lg bg-primary text-sm font-bold text-white">
+        <SubmitButton pendingText="저장 중..." className="h-11 rounded-lg bg-primary text-sm font-bold text-white">
           저장
-        </button>
+        </SubmitButton>
       </form>
     </div>
   );

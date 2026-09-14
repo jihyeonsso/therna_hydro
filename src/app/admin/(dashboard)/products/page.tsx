@@ -1,5 +1,6 @@
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
+import { SubmitButton } from "@/components/SubmitButton";
 
 export default async function AdminProductsPage() {
   const product = await prisma.product.findFirst();
@@ -33,9 +34,9 @@ export default async function AdminProductsPage() {
         <p className="text-xs text-text-faint">
           * 제품 사진 업로드는 2차(에셋 스토리지 연동) 예정. 지금은 앱 화면에 플레이스홀더로 표시됩니다.
         </p>
-        <button type="submit" className="h-11 rounded-lg bg-primary text-sm font-bold text-white">
+        <SubmitButton pendingText="저장 중..." className="h-11 rounded-lg bg-primary text-sm font-bold text-white">
           저장
-        </button>
+        </SubmitButton>
       </form>
     </div>
   );
