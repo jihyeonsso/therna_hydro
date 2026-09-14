@@ -3,24 +3,26 @@ import { compare } from "bcryptjs";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { createUserSession } from "@/lib/session";
+import { SubmitButton } from "@/components/SubmitButton";
 
 export default async function LoginPage({
   searchParams,
 }: {
-  searchParams: Promise<{ error?: string; next?: string }>;
+  searchParams: Promise<{ error?: string; next?: string; email?: string }>;
 }) {
-  const { error, next } = await searchParams;
+  const { error, next, email: prefillEmail } = await searchParams;
 
   async function login(formData: FormData) {
     "use server";
     const email = String(formData.get("email") || "").trim();
     const password = String(formData.get("password") || "");
     const redirectTo = String(formData.get("next") || "/");
+    const failParams = `error=1&next=${encodeURIComponent(redirectTo)}&email=${encodeURIComponent(email)}`;
 
     const user = await prisma.user.findUnique({ where: { email } });
     const ok = user ? await compare(password, user.passwordHash) : false;
     if (!user || !ok) {
-      redirect(`/login?error=1&next=${encodeURIComponent(redirectTo)}`);
+      redirect(`/login?${failParams}`);
     }
     await createUserSession(user.id);
     // redirectTo가 hidden input을 거치며 URL-디코딩된 상태(한글 등 비ASCII 포함 가능)로 들어오므로,
@@ -53,6 +55,7 @@ export default async function LoginPage({
           type="email"
           name="email"
           required
+          defaultValue={prefillEmail ?? ""}
           placeholder="이메일"
           className="h-[52px] w-full rounded-lg border border-border bg-surface px-3.5 text-sm text-text placeholder:text-text-faint"
         />
@@ -63,20 +66,17 @@ export default async function LoginPage({
           placeholder="비밀번호"
           className="h-[52px] w-full rounded-lg border border-border bg-surface px-3.5 text-sm text-text placeholder:text-text-faint"
         />
-        <button
-          type="submit"
+        <SubmitButton
+          pendingText="로그인 중..."
           className="mt-2 flex h-[52px] w-full items-center justify-center rounded-[10px] bg-primary text-[15px] font-bold text-white"
         >
           로그인
-        </button>
+        </SubmitButton>
       </form>
       <div className="mt-5 flex justify-center gap-4 text-[13px] text-text-muted">
         <Link href={`/signup?next=${encodeURIComponent(next ?? "/")}`}>회원가입</Link>
         <span className="text-border">|</span>
         <Link href="/login/reset">비밀번호 찾기</Link>
-      </div>
-      <div className="mt-8 text-center text-xs text-text-faint">
-        데모 계정: demo@example.com / password123
       </div>
     </div>
   );

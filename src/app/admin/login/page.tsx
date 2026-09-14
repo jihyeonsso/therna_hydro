@@ -2,13 +2,14 @@ import { redirect } from "next/navigation";
 import { compare } from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 import { createAdminSession } from "@/lib/session";
+import { SubmitButton } from "@/components/SubmitButton";
 
 export default async function AdminLoginPage({
   searchParams,
 }: {
-  searchParams: Promise<{ error?: string }>;
+  searchParams: Promise<{ error?: string; email?: string }>;
 }) {
-  const { error } = await searchParams;
+  const { error, email: prefillEmail } = await searchParams;
 
   async function login(formData: FormData) {
     "use server";
@@ -17,7 +18,7 @@ export default async function AdminLoginPage({
 
     const admin = await prisma.admin.findUnique({ where: { email } });
     const ok = admin ? await compare(password, admin.passwordHash) : false;
-    if (!admin || !ok) redirect("/admin/login?error=1");
+    if (!admin || !ok) redirect(`/admin/login?error=1&email=${encodeURIComponent(email)}`);
 
     await createAdminSession(admin.id);
     redirect("/admin");
@@ -36,6 +37,7 @@ export default async function AdminLoginPage({
           type="email"
           name="email"
           required
+          defaultValue={prefillEmail ?? ""}
           placeholder="관리자 이메일"
           className="h-[52px] w-full rounded-lg border border-border bg-surface px-3.5 text-sm text-text placeholder:text-text-faint"
         />
@@ -46,14 +48,13 @@ export default async function AdminLoginPage({
           placeholder="비밀번호"
           className="h-[52px] w-full rounded-lg border border-border bg-surface px-3.5 text-sm text-text placeholder:text-text-faint"
         />
-        <button
-          type="submit"
+        <SubmitButton
+          pendingText="로그인 중..."
           className="mt-2 flex h-[52px] w-full items-center justify-center rounded-[10px] bg-primary text-[15px] font-bold text-white"
         >
           로그인
-        </button>
+        </SubmitButton>
       </form>
-      <div className="mt-6 text-center text-xs text-text-faint">데모 관리자: admin@example.com / admin1234</div>
     </div>
   );
 }

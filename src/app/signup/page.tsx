@@ -2,15 +2,26 @@ import { redirect } from "next/navigation";
 import { hash } from "bcryptjs";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import { Prisma } from "@/generated/prisma/client";
 import { createUserSession } from "@/lib/session";
 import { BackHeader } from "@/components/BackHeader";
+import { SubmitButton } from "@/components/SubmitButton";
+
+const ERROR_MESSAGES: Record<string, string> = {
+  name: "이름을 입력해주세요",
+  email: "이메일을 입력해주세요",
+  password_short: "비밀번호는 8자 이상이어야 합니다",
+  password_mismatch: "비밀번호가 서로 일치하지 않습니다",
+  terms: "이용약관에 동의해주세요",
+  email_taken: "이미 가입된 이메일입니다",
+};
 
 export default async function SignupPage({
   searchParams,
 }: {
-  searchParams: Promise<{ error?: string; next?: string }>;
+  searchParams: Promise<{ error?: string; next?: string; name?: string; email?: string }>;
 }) {
-  const { error, next } = await searchParams;
+  const { error, next, name: prefillName, email: prefillEmail } = await searchParams;
 
   async function signup(formData: FormData) {
     "use server";
@@ -21,16 +32,27 @@ export default async function SignupPage({
     const agreed = formData.get("agreed") === "on";
     const redirectTo = String(formData.get("next") || "/");
 
-    if (!name || !email || !password || password !== passwordConfirm || !agreed) {
-      redirect(`/signup?error=1&next=${encodeURIComponent(redirectTo)}`);
+    const prefill = `next=${encodeURIComponent(redirectTo)}&name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}`;
+    const fail = (code: string) => redirect(`/signup?error=${code}&${prefill}`);
+
+    if (!name) fail("name");
+    if (!email) fail("email");
+    if (password.length < 8) fail("password_short");
+    if (password !== passwordConfirm) fail("password_mismatch");
+    if (!agreed) fail("terms");
+
+    let user;
+    try {
+      user = await prisma.user.create({
+        data: { name, email, passwordHash: await hash(password, 10) },
+      });
+    } catch (e) {
+      // 동시에 같은 이메일로 가입 요청이 들어와 유니크 제약을 위반한 경우도 여기서 함께 처리됨
+      if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === "P2002") {
+        fail("email_taken");
+      }
+      throw e;
     }
-    const existing = await prisma.user.findUnique({ where: { email } });
-    if (existing) {
-      redirect(`/signup?error=1&next=${encodeURIComponent(redirectTo)}`);
-    }
-    const user = await prisma.user.create({
-      data: { name, email, passwordHash: await hash(password, 10) },
-    });
     await createUserSession(user.id);
     redirect(encodeURI(redirectTo));
   }
@@ -40,7 +62,7 @@ export default async function SignupPage({
       <BackHeader title="회원가입" />
       {error && (
         <div className="mx-5 mt-4 rounded-lg bg-danger-bg px-3.5 py-2.5 text-center text-[13px] font-semibold text-danger">
-          입력값을 확인해주세요 (이미 가입된 이메일이거나 비밀번호 불일치)
+          {ERROR_MESSAGES[error] ?? "입력값을 확인해주세요"}
         </div>
       )}
       <form action={signup} className="flex flex-1 flex-col gap-3 p-5">
@@ -48,6 +70,7 @@ export default async function SignupPage({
         <input
           name="name"
           required
+          defaultValue={prefillName ?? ""}
           placeholder="이름"
           className="h-[50px] w-full rounded-lg border border-border bg-surface px-3.5 text-sm text-text placeholder:text-text-faint"
         />
@@ -55,20 +78,25 @@ export default async function SignupPage({
           type="email"
           name="email"
           required
+          defaultValue={prefillEmail ?? ""}
           placeholder="이메일"
           className="h-[50px] w-full rounded-lg border border-border bg-surface px-3.5 text-sm text-text placeholder:text-text-faint"
         />
-        <input
-          type="password"
-          name="password"
-          required
-          placeholder="비밀번호"
-          className="h-[50px] w-full rounded-lg border border-border bg-surface px-3.5 text-sm text-text placeholder:text-text-faint"
-        />
+        <div>
+          <input
+            type="password"
+            name="password"
+            required
+            minLength={8}
+            placeholder="비밀번호 (8자 이상)"
+            className="h-[50px] w-full rounded-lg border border-border bg-surface px-3.5 text-sm text-text placeholder:text-text-faint"
+          />
+        </div>
         <input
           type="password"
           name="passwordConfirm"
           required
+          minLength={8}
           placeholder="비밀번호 확인"
           className="h-[50px] w-full rounded-lg border border-border bg-surface px-3.5 text-sm text-text placeholder:text-text-faint"
         />
@@ -81,12 +109,12 @@ export default async function SignupPage({
             동의
           </span>
         </label>
-        <button
-          type="submit"
+        <SubmitButton
+          pendingText="가입 처리 중..."
           className="mt-1 flex h-[52px] w-full items-center justify-center rounded-[10px] bg-primary text-[15px] font-bold text-white"
         >
           가입하기
-        </button>
+        </SubmitButton>
       </form>
     </div>
   );
