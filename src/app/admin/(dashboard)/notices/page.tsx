@@ -1,9 +1,16 @@
-import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { formatMonthDay } from "@/lib/labels";
 import { SubmitButton } from "@/components/SubmitButton";
+import { ConfirmSubmitButton } from "@/components/ConfirmSubmitButton";
+import { Banner } from "@/components/Banner";
 
-export default async function AdminNoticesPage() {
+export default async function AdminNoticesPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ notice?: string }>;
+}) {
+  const { notice } = await searchParams;
   const notices = await prisma.notice.findMany({ orderBy: { createdAt: "desc" } });
 
   async function create(formData: FormData) {
@@ -11,25 +18,37 @@ export default async function AdminNoticesPage() {
     const title = String(formData.get("title") || "").trim();
     const body = String(formData.get("body") || "").trim();
     const isUrgent = formData.get("isUrgent") === "on";
-    if (!title || !body) return;
+    if (!title || !body) redirect("/admin/notices?notice=invalid");
     await prisma.notice.create({ data: { title, body, isUrgent } });
-    revalidatePath("/admin/notices");
-    revalidatePath("/");
-    revalidatePath("/my/notices");
+    redirect("/admin/notices?notice=created");
   }
 
   async function remove(formData: FormData) {
     "use server";
     const id = String(formData.get("id"));
     await prisma.notice.delete({ where: { id } });
-    revalidatePath("/admin/notices");
-    revalidatePath("/");
-    revalidatePath("/my/notices");
+    redirect("/admin/notices?notice=deleted");
   }
 
   return (
     <div>
       <h1 className="mb-5 text-xl font-black text-text">공지사항 관리</h1>
+
+      {notice === "created" && (
+        <div className="mb-4">
+          <Banner variant="success">등록되었습니다</Banner>
+        </div>
+      )}
+      {notice === "deleted" && (
+        <div className="mb-4">
+          <Banner variant="success">삭제되었습니다</Banner>
+        </div>
+      )}
+      {notice === "invalid" && (
+        <div className="mb-4">
+          <Banner variant="danger">제목과 내용을 모두 입력해주세요</Banner>
+        </div>
+      )}
 
       <form action={create} className="mb-6 flex flex-col gap-3 rounded-xl border border-border bg-surface p-5">
         <input
@@ -47,7 +66,7 @@ export default async function AdminNoticesPage() {
         />
         <label className="flex items-center gap-2 text-[13px] text-text">
           <input type="checkbox" name="isUrgent" className="h-4 w-4" />
-          긴급 공지(경고색 배너로 별도 노출 — 2차 화면 구현 예정)
+          긴급 공지 (홈 화면에 경고색 배너로 별도 노출)
         </label>
         <SubmitButton
           pendingText="등록 중..."
@@ -70,9 +89,13 @@ export default async function AdminNoticesPage() {
             </div>
             <form action={remove}>
               <input type="hidden" name="id" value={n.id} />
-              <SubmitButton pendingText="삭제 중..." className="text-xs font-semibold text-danger">
+              <ConfirmSubmitButton
+                confirmMessage={`"${n.title}" 공지사항을 삭제하시겠습니까?`}
+                pendingText="삭제 중..."
+                className="text-xs font-semibold text-danger"
+              >
                 삭제
-              </SubmitButton>
+              </ConfirmSubmitButton>
             </form>
           </div>
         ))}

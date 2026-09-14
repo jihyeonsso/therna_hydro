@@ -2,10 +2,24 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth";
 import { METHOD_LABEL, formatMonthDay } from "@/lib/labels";
+import { Banner } from "@/components/Banner";
 
-export default async function HomePage() {
+const HOME_NOTICE_TEXT: Record<string, string> = {
+  withdrawn: "탈퇴가 완료되었습니다. 그동안 이용해주셔서 감사합니다.",
+};
+
+export default async function HomePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ notice?: string }>;
+}) {
+  const { notice: noticeCode } = await searchParams;
   const user = await getCurrentUser();
 
+  const urgentNotice = await prisma.notice.findFirst({
+    where: { isUrgent: true },
+    orderBy: { createdAt: "desc" },
+  });
   const notice = await prisma.notice.findFirst({ orderBy: { createdAt: "desc" } });
   const noticeCount = await prisma.notice.count();
 
@@ -27,6 +41,32 @@ export default async function HomePage() {
       </header>
 
       <div className="flex flex-col gap-3.5 p-4">
+        {noticeCode && HOME_NOTICE_TEXT[noticeCode] && <Banner variant="success">{HOME_NOTICE_TEXT[noticeCode]}</Banner>}
+
+        {urgentNotice && (
+          <Link
+            href="/my/notices"
+            className="flex items-start gap-2.5 rounded-[10px] border border-warning-border bg-warning-bg p-3.5"
+          >
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#B45309"
+              strokeWidth={2}
+              className="mt-0.5 shrink-0"
+            >
+              <path d="M12 3L2 20h20L12 3z" />
+              <path d="M12 9v5M12 17h.01" />
+            </svg>
+            <div className="flex-1">
+              <div className="text-[13px] font-bold text-warning-text">긴급 공지</div>
+              <div className="mt-0.5 text-xs text-warning-text">{urgentNotice.title}</div>
+            </div>
+          </Link>
+        )}
+
         {notice && (
           <Link
             href="/my/notices"

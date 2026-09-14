@@ -50,7 +50,7 @@ export default async function AdminGuideEditPage({
         sprayCycleNote: str(formData.get("sprayCycleNote")),
       },
     });
-    redirect("/admin/guides");
+    redirect("/admin/guides?saved=1");
   }
 
   return (

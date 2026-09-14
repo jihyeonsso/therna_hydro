@@ -20,7 +20,7 @@ export default async function FarmProfilePage() {
       update: { systemType },
       create: { userId: user!.id, systemType },
     });
-    redirect("/my");
+    redirect("/my?notice=saved");
   }
 
   return (

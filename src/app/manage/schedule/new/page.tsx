@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth";
 import { BackHeader } from "@/components/BackHeader";
 import { SubmitButton } from "@/components/SubmitButton";
+import { ConfirmSubmitButton } from "@/components/ConfirmSubmitButton";
 
 export default async function ScheduleFormPage({
   searchParams,
@@ -44,7 +45,7 @@ export default async function ScheduleFormPage({
     } else {
       await prisma.schedule.create({ data: { registeredCropId, scheduledDate, repeatRule } });
     }
-    redirect("/manage?tab=schedule");
+    redirect("/manage?tab=schedule&notice=saved");
   }
 
   async function remove() {
@@ -53,7 +54,7 @@ export default async function ScheduleFormPage({
       // 내 소유의 일정일 때만 삭제 허용
       await prisma.schedule.deleteMany({ where: { id, registeredCrop: { userId } } });
     }
-    redirect("/manage?tab=schedule");
+    redirect("/manage?tab=schedule&notice=deleted");
   }
 
   const defaultCropId = existing?.registeredCropId ?? cropId ?? crops[0]?.id ?? "";
@@ -106,9 +107,13 @@ export default async function ScheduleFormPage({
       </form>
       {id && (
         <form action={remove} className="px-5 pb-6">
-          <SubmitButton pendingText="삭제 중..." className="w-full text-center text-[13px] font-semibold text-danger">
+          <ConfirmSubmitButton
+            confirmMessage="이 일정을 삭제하시겠습니까? 삭제하면 되돌릴 수 없습니다."
+            pendingText="삭제 중..."
+            className="w-full text-center text-[13px] font-semibold text-danger"
+          >
             이 일정 삭제
-          </SubmitButton>
+          </ConfirmSubmitButton>
         </form>
       )}
     </div>

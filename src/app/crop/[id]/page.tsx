@@ -3,7 +3,13 @@ import { notFound, redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth";
 import { BackHeader } from "@/components/BackHeader";
+import { Banner } from "@/components/Banner";
 import { METHOD_LABEL, formatMonthDay } from "@/lib/labels";
+
+const NOTICE_TEXT: Record<string, string> = {
+  registered: "내 작물로 등록되었습니다",
+  already_registered: "이미 등록되어 있는 작물이에요",
+};
 
 function Card({ label, children }: { label: string; children: React.ReactNode }) {
   return (
@@ -14,8 +20,15 @@ function Card({ label, children }: { label: string; children: React.ReactNode })
   );
 }
 
-export default async function CropDetailPage({ params }: { params: Promise<{ id: string }> }) {
+export default async function CropDetailPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ notice?: string }>;
+}) {
   const { id } = await params;
+  const { notice } = await searchParams;
 
   const user = await getCurrentUser();
   if (!user) redirect(`/login?next=${encodeURIComponent(`/crop/${id}`)}`);
@@ -42,6 +55,7 @@ export default async function CropDetailPage({ params }: { params: Promise<{ id:
     <div className="mx-auto flex min-h-screen w-full max-w-md flex-col bg-bg">
       <BackHeader title={crop.cropName} />
       <div className="flex flex-1 flex-col gap-4 p-4 pb-8">
+        {notice && NOTICE_TEXT[notice] && <Banner variant="success">{NOTICE_TEXT[notice]}</Banner>}
         <span className="w-fit rounded-full bg-primary-soft px-2.5 py-1 text-xs font-bold text-primary">
           {METHOD_LABEL[crop.method]}
         </span>

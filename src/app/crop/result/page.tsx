@@ -53,12 +53,13 @@ export default async function CropResultPage({
     const existing = await prisma.registeredCrop.findFirst({
       where: { userId: user.id, cropName: crop, method },
     });
-    const registered =
-      existing ??
-      (await prisma.registeredCrop.create({
-        data: { userId: user.id, cropName: crop, method },
-      }));
-    redirect(`/crop/${registered.id}`);
+    if (existing) {
+      redirect(`/crop/${existing.id}?notice=already_registered`);
+    }
+    const registered = await prisma.registeredCrop.create({
+      data: { userId: user.id, cropName: crop, method },
+    });
+    redirect(`/crop/${registered.id}?notice=registered`);
   }
 
   return (

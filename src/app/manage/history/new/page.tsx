@@ -41,7 +41,7 @@ export default async function HistoryInputPage({
         memo,
       },
     });
-    redirect("/manage?tab=history");
+    redirect("/manage?tab=history&notice=saved");
   }
 
   return (
