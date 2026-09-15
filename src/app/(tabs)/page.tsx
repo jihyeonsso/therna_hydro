@@ -1,7 +1,15 @@
+import Image from "next/image";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/auth";
 import { METHOD_LABEL, formatMonthDay } from "@/lib/labels";
+
+function daysUntil(target: Date): number {
+  const now = new Date();
+  const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const startOfTarget = new Date(target.getFullYear(), target.getMonth(), target.getDate());
+  return Math.round((startOfTarget.getTime() - startOfToday.getTime()) / (1000 * 60 * 60 * 24));
+}
 
 export default async function HomePage() {
   const user = await getCurrentUser();
@@ -24,6 +32,10 @@ export default async function HomePage() {
       })
     : [];
 
+  const upcoming = crops
+    .filter((c) => c.schedules[0])
+    .sort((a, b) => a.schedules[0].scheduledDate.getTime() - b.schedules[0].scheduledDate.getTime())[0];
+
   return (
     <>
       <header className="flex h-14 shrink-0 items-center border-b border-border bg-surface px-4">
@@ -31,6 +43,18 @@ export default async function HomePage() {
       </header>
 
       <div className="flex flex-col gap-3.5 p-4">
+        {user && upcoming && (
+          <div className="text-[15px] font-bold text-text">
+            {user.name}님, {upcoming.cropName} 다음 일정까지{" "}
+            <span className="text-primary">
+              {(() => {
+                const d = daysUntil(upcoming.schedules[0].scheduledDate);
+                return d <= 0 ? "오늘" : `D-${d}`;
+              })()}
+            </span>
+          </div>
+        )}
+
         {urgentNotice && (
           <Link
             href="/my/notices"
@@ -77,8 +101,15 @@ export default async function HomePage() {
 
         <div className="flex flex-col gap-3 rounded-2xl bg-primary p-4">
           <div className="text-base font-black text-white">ThermaVita Hydro</div>
-          <div className="flex h-32 items-center justify-center rounded-[10px] border border-dashed border-white/40 bg-white/10 text-xs font-semibold text-white/75">
-            제품 사진
+          <div className="flex h-40 items-center justify-center rounded-[10px] bg-white p-3">
+            <Image
+              src="/images/product-thermavita.jpg"
+              alt="ThermaVita Hydro 제품 사진"
+              width={200}
+              height={280}
+              className="h-full w-auto object-contain"
+              priority
+            />
           </div>
           <div className="flex gap-2">
             <Link

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { BackHeader } from "@/components/BackHeader";
@@ -12,8 +13,14 @@ export default async function ProductInfoPage() {
     <div className="mx-auto flex min-h-screen w-full max-w-md flex-col bg-bg">
       <BackHeader title="제품 정보" />
       <div className="flex flex-1 flex-col gap-3.5 p-4 pb-8">
-        <div className="flex h-[140px] items-center justify-center rounded-[10px] bg-[#E5EAE6] text-xs text-text-faint">
-          제품 이미지
+        <div className="flex h-[180px] items-center justify-center rounded-[10px] border border-border bg-white p-3">
+          <Image
+            src="/images/product-thermavita.jpg"
+            alt={`${product?.name ?? "ThermaVita Hydro"} 제품 사진`}
+            width={220}
+            height={300}
+            className="h-full w-auto object-contain"
+          />
         </div>
         <div>
           <div className="text-[19px] font-black text-text">{product?.name ?? "ThermaVita Hydro"}</div>
