@@ -3,7 +3,13 @@ import { compare } from "bcryptjs";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { createUserSession } from "@/lib/session";
+import { isLoginLocked, nextLockoutState } from "@/lib/auth";
 import { SubmitButton } from "@/components/SubmitButton";
+
+const ERROR_MESSAGES: Record<string, string> = {
+  invalid: "이메일 또는 비밀번호가 올바르지 않습니다",
+  locked: "로그인 시도가 너무 많습니다. 15분 후 다시 시도해주세요",
+};
 
 export default async function LoginPage({
   searchParams,
@@ -17,14 +23,27 @@ export default async function LoginPage({
     const email = String(formData.get("email") || "").trim();
     const password = String(formData.get("password") || "");
     const redirectTo = String(formData.get("next") || "/");
-    const failParams = `error=1&next=${encodeURIComponent(redirectTo)}&email=${encodeURIComponent(email)}`;
+    const fail = (code: string) =>
+      redirect(`/login?error=${code}&next=${encodeURIComponent(redirectTo)}&email=${encodeURIComponent(email)}`);
 
     const user = await prisma.user.findUnique({ where: { email } });
+    if (user && isLoginLocked(user.lockedUntil)) {
+      fail("locked");
+    }
+
     const ok = user ? await compare(password, user.passwordHash) : false;
     if (!user || !ok) {
-      redirect(`/login?${failParams}`);
+      if (user) {
+        const lockState = nextLockoutState(user.failedLoginAttempts, user.lockedUntil);
+        await prisma.user.update({ where: { id: user.id }, data: lockState });
+        if (lockState.lockedUntil) fail("locked");
+      }
+      fail("invalid");
     }
-    await createUserSession(user.id);
+    if (user!.failedLoginAttempts > 0 || user!.lockedUntil) {
+      await prisma.user.update({ where: { id: user!.id }, data: { failedLoginAttempts: 0, lockedUntil: null } });
+    }
+    await createUserSession(user!.id);
     // redirectTo가 hidden input을 거치며 URL-디코딩된 상태(한글 등 비ASCII 포함 가능)로 들어오므로,
     // redirect()에 그대로 넘기면 응답 헤더(x-action-redirect)에 비ASCII 문자가 들어가 에러가 남.
     // encodeURI로 재인코딩(경로 구분자 /,?,&,= 는 보존)한 뒤 redirect.
@@ -46,7 +65,7 @@ export default async function LoginPage({
       <div className="mb-2 text-center text-lg font-black text-text">ThermaVita Hydro</div>
       {error && (
         <div className="mb-3 rounded-lg bg-danger-bg px-3.5 py-2.5 text-center text-[13px] font-semibold text-danger">
-          이메일 또는 비밀번호가 올바르지 않습니다
+          {ERROR_MESSAGES[error] ?? ERROR_MESSAGES.invalid}
         </div>
       )}
       <form action={login} className="flex flex-col gap-3">

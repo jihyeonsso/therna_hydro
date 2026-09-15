@@ -2,7 +2,13 @@ import { redirect } from "next/navigation";
 import { compare } from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 import { createAdminSession } from "@/lib/session";
+import { isLoginLocked, nextLockoutState } from "@/lib/auth";
 import { SubmitButton } from "@/components/SubmitButton";
+
+const ERROR_MESSAGES: Record<string, string> = {
+  invalid: "이메일 또는 비밀번호가 올바르지 않습니다",
+  locked: "로그인 시도가 너무 많습니다. 15분 후 다시 시도해주세요",
+};
 
 export default async function AdminLoginPage({
   searchParams,
@@ -15,12 +21,26 @@ export default async function AdminLoginPage({
     "use server";
     const email = String(formData.get("email") || "").trim();
     const password = String(formData.get("password") || "");
+    const fail = (code: string) => redirect(`/admin/login?error=${code}&email=${encodeURIComponent(email)}`);
 
     const admin = await prisma.admin.findUnique({ where: { email } });
-    const ok = admin ? await compare(password, admin.passwordHash) : false;
-    if (!admin || !ok) redirect(`/admin/login?error=1&email=${encodeURIComponent(email)}`);
+    if (admin && isLoginLocked(admin.lockedUntil)) {
+      fail("locked");
+    }
 
-    await createAdminSession(admin.id);
+    const ok = admin ? await compare(password, admin.passwordHash) : false;
+    if (!admin || !ok) {
+      if (admin) {
+        const lockState = nextLockoutState(admin.failedLoginAttempts, admin.lockedUntil);
+        await prisma.admin.update({ where: { id: admin.id }, data: lockState });
+        if (lockState.lockedUntil) fail("locked");
+      }
+      fail("invalid");
+    }
+    if (admin!.failedLoginAttempts > 0 || admin!.lockedUntil) {
+      await prisma.admin.update({ where: { id: admin!.id }, data: { failedLoginAttempts: 0, lockedUntil: null } });
+    }
+    await createAdminSession(admin!.id);
     redirect("/admin");
   }
 
@@ -29,7 +49,7 @@ export default async function AdminLoginPage({
       <div className="mb-6 text-center text-lg font-black text-text">ThermaVita Hydro 관리자</div>
       {error && (
         <div className="mb-3 rounded-lg bg-danger-bg px-3.5 py-2.5 text-center text-[13px] font-semibold text-danger">
-          이메일 또는 비밀번호가 올바르지 않습니다
+          {ERROR_MESSAGES[error] ?? ERROR_MESSAGES.invalid}
         </div>
       )}
       <form action={login} className="flex flex-col gap-3">

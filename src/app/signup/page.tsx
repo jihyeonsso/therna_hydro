@@ -10,11 +10,15 @@ import { SubmitButton } from "@/components/SubmitButton";
 const ERROR_MESSAGES: Record<string, string> = {
   name: "이름을 입력해주세요",
   email: "이메일을 입력해주세요",
+  email_invalid: "올바른 이메일 형식이 아닙니다",
   password_short: "비밀번호는 8자 이상이어야 합니다",
   password_mismatch: "비밀번호가 서로 일치하지 않습니다",
   terms: "이용약관에 동의해주세요",
   email_taken: "이미 가입된 이메일입니다",
 };
+
+// 브라우저 type="email" 검증은 우회 가능하므로 서버에서도 형식을 다시 확인
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export default async function SignupPage({
   searchParams,
@@ -37,6 +41,7 @@ export default async function SignupPage({
 
     if (!name) fail("name");
     if (!email) fail("email");
+    if (!EMAIL_PATTERN.test(email)) fail("email_invalid");
     if (password.length < 8) fail("password_short");
     if (password !== passwordConfirm) fail("password_mismatch");
     if (!agreed) fail("terms");
