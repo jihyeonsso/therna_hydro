@@ -103,7 +103,7 @@ export default async function HomePage() {
           <div className="text-base font-black text-white">ThermaVita Hydro</div>
           <div className="flex h-40 items-center justify-center rounded-[10px] bg-white p-3">
             <Image
-              src="/images/product-thermavita.jpg"
+              src="/images/product-thermavita.png"
               alt="ThermaVita Hydro 제품 사진"
               width={200}
               height={280}

@@ -15,7 +15,7 @@ export default async function ProductInfoPage() {
       <div className="flex flex-1 flex-col gap-3.5 p-4 pb-8">
         <div className="flex h-[180px] items-center justify-center rounded-[10px] border border-border bg-white p-3">
           <Image
-            src="/images/product-thermavita.jpg"
+            src="/images/product-thermavita.png"
             alt={`${product?.name ?? "ThermaVita Hydro"} 제품 사진`}
             width={220}
             height={300}
