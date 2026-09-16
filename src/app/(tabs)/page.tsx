@@ -137,37 +137,38 @@ export default async function HomePage() {
             <div className="text-[11px] font-bold uppercase tracking-wide text-text-muted">
               ThermaVita Hydro 적용 현황 ({crops.length})
             </div>
-            {crops.map((crop) => {
-              const next = crop.schedules[0];
-              const last = crop.histories[0];
-              return (
-                <Link
-                  key={crop.id}
-                  href={`/crop/${crop.id}`}
-                  className="flex items-center gap-3 rounded-xl border border-border bg-surface p-3.5"
-                >
-                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[10px] bg-primary-soft">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2F7D5F" strokeWidth={2}>
-                      <path d="M12 2c-4 4-6 8-6 11a6 6 0 0 0 12 0c0-3-2-7-6-11z" />
-                    </svg>
-                  </div>
-                  <div className="flex-1">
-                    <div className="text-sm font-bold text-text">{crop.cropName}</div>
-                    <div className="mt-1 inline-block rounded-full bg-primary-soft px-2 py-0.5 text-[11px] font-bold text-primary">
-                      {METHOD_LABEL[crop.method]}
+            <div className="-mx-4 flex gap-3 overflow-x-auto px-4 pb-1">
+              {crops.map((crop) => {
+                const next = crop.schedules[0];
+                const last = crop.histories[0];
+                return (
+                  <Link
+                    key={crop.id}
+                    href={`/crop/${crop.id}`}
+                    className="flex w-[164px] shrink-0 flex-col gap-2.5 rounded-xl border border-border bg-surface p-3.5"
+                  >
+                    <div className="flex h-11 w-11 items-center justify-center rounded-[10px] bg-primary-soft">
+                      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2F7D5F" strokeWidth={2}>
+                        <path d="M12 2c-4 4-6 8-6 11a6 6 0 0 0 12 0c0-3-2-7-6-11z" />
+                      </svg>
                     </div>
-                    <div className="mt-1 text-[11px] text-text-faint">
-                      {next
-                        ? `다음 일정: ${formatMonthDay(next.scheduledDate)}`
-                        : last
-                        ? `최근 적용: ${formatMonthDay(last.appliedDate)}`
-                        : "등록된 일정/이력 없음"}
+                    <div>
+                      <div className="text-sm font-bold text-text">{crop.cropName}</div>
+                      <div className="mt-1 inline-block rounded-full bg-primary-soft px-2 py-0.5 text-[11px] font-bold text-primary">
+                        {METHOD_LABEL[crop.method]}
+                      </div>
+                      <div className="mt-1.5 text-[11px] text-text-faint">
+                        {next
+                          ? `다음 일정: ${formatMonthDay(next.scheduledDate)}`
+                          : last
+                          ? `최근 적용: ${formatMonthDay(last.appliedDate)}`
+                          : "등록된 일정/이력 없음"}
+                      </div>
                     </div>
-                  </div>
-                  <span className="text-border">›</span>
-                </Link>
-              );
-            })}
+                  </Link>
+                );
+              })}
+            </div>
           </>
         )}
       </div>
