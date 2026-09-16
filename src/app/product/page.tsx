@@ -13,13 +13,15 @@ export default async function ProductInfoPage() {
     <div className="mx-auto flex min-h-screen w-full max-w-md flex-col bg-bg">
       <BackHeader title="제품 정보" />
       <div className="flex flex-1 flex-col gap-3.5 p-4 pb-8">
-        <div className="flex h-[180px] items-center justify-center rounded-[10px] border border-border bg-white p-3">
+        <div className="relative flex h-[200px] items-center justify-center overflow-hidden rounded-[10px] border border-border bg-gradient-to-b from-white to-[#E9F1EA] p-3">
+          <div className="pointer-events-none absolute left-1/2 top-1/2 h-40 w-40 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary-soft blur-2xl" />
+          <div className="pointer-events-none absolute bottom-5 left-1/2 h-3.5 w-24 -translate-x-1/2 rounded-full bg-black/15 blur-md" />
           <Image
             src="/images/product-thermavita.png"
             alt={`${product?.name ?? "ThermaVita Hydro"} 제품 사진`}
             width={220}
             height={300}
-            className="h-full w-auto object-contain"
+            className="relative h-full w-auto object-contain mix-blend-multiply drop-shadow-[0_10px_14px_rgba(0,0,0,0.18)]"
           />
         </div>
         <div>

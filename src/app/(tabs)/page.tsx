@@ -101,13 +101,15 @@ export default async function HomePage() {
 
         <div className="flex flex-col gap-3 rounded-2xl bg-primary p-4">
           <div className="text-base font-black text-white">ThermaVita Hydro</div>
-          <div className="flex h-40 items-center justify-center rounded-[10px] bg-white p-3">
+          <div className="relative flex h-44 items-center justify-center overflow-hidden rounded-[10px] bg-gradient-to-b from-white to-[#E9F1EA] p-3">
+            <div className="pointer-events-none absolute left-1/2 top-1/2 h-36 w-36 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary-soft blur-2xl" />
+            <div className="pointer-events-none absolute bottom-4 left-1/2 h-3 w-20 -translate-x-1/2 rounded-full bg-black/15 blur-md" />
             <Image
               src="/images/product-thermavita.png"
               alt="ThermaVita Hydro 제품 사진"
               width={200}
               height={280}
-              className="h-full w-auto object-contain"
+              className="relative h-full w-auto object-contain mix-blend-multiply drop-shadow-[0_10px_14px_rgba(0,0,0,0.18)]"
               priority
             />
           </div>
